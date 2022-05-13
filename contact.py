@@ -7,7 +7,7 @@ def create_db():
     this method will create database if not created
     :return:
     """
-    
+
     conn = sqlite3.connect('contact.db')
     conn.execute('''CREATE TABLE IF NOT EXISTS CONTACTS
              (NAME           TEXT    NOT NULL,
@@ -25,11 +25,10 @@ def add():
     conn = sqlite3.connect('contact.db')
     cursor = conn.cursor()
     cursor.execute("INSERT INTO CONTACTS (NAME, NUMBER, ADDRESS) VALUES (?, ?, ?)", (Name.get(),Number.get(),address.get(1.0, "end-1c")))
-
-    update()
-
     conn.commit()
     conn.close()
+
+    update()
 
     Name.set('')
     Number.set('')
@@ -40,7 +39,7 @@ def update():
     this method will update the list of contacts
     :return:
     """
-    global select
+    global select, Name, Number, address
     conn = sqlite3.connect('contact.db')
     cursor = conn.cursor()
     select.delete(0, END)
@@ -49,6 +48,9 @@ def update():
         select.insert(END, row[0])
     conn.close()
 
+    Name.set('')
+    Number.set('')
+    address.delete(1.0, "end")
 def view():
     """
     this method will retrieve details for selected contact and show on screen
